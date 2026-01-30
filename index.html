@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica de Despliegue en Azure</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* VARIABLES CSS PARA MANEJO DE TEMAS */
+        :root {
+            --primary: #0078D4;
+            --primary-hover: #005a9e;
+            --bg-body: #f3f4f6;
+            --bg-card: #ffffff;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --border: rgba(0,0,0,0.05);
+            --shadow: rgba(0,0,0,0.05);
+            --gradient: linear-gradient(135deg, #0078D4, #005a9e);
+        }
+
+        /* CLASE PARA MODO OSCURO */
+        body.dark-mode {
+            --primary: #60a5fa; /* Un azul más claro para fondo oscuro */
+            --primary-hover: #3b82f6;
+            --bg-body: #111827;
+            --bg-card: #1f2937;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border: rgba(255,255,255,0.1);
+            --shadow: rgba(0,0,0,0.5);
+            --gradient: linear-gradient(135deg, #1f2937, #111827);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            background-color: var(--bg-card);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px var(--shadow);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            position: relative;
+        }
+
+        /* BOTÓN MODO OSCURO */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            transition: transform 0.2s;
+            z-index: 10;
+        }
+        .theme-toggle:hover { transform: scale(1.1); }
+
+        /* HEADER */
+        header {
+            background: var(--gradient);
+            color: white;
+            padding: 60px 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            min-height: 1.2em; /* Evita saltos mientras se escribe */
+        }
+
+        /* Cursor parpadeante */
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            background-color: white;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        header p { font-size: 1.1rem; opacity: 0.9; font-weight: 300; }
+
+        /* MAIN */
+        main { padding: 40px 30px; }
+        section { margin-bottom: 40px; }
+
+        h2 {
+            color: var(--text-main);
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        p.description { color: var(--text-muted); font-size: 1.05rem; }
+
+        /* GRID TECNOLOGÍAS */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 20px;
+        }
+
+        .tech-item {
+            background-color: var(--bg-body);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .tech-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .tech-item i {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: block;
+            transition: transform 0.3s;
+        }
+        
+        .tech-item:hover i { transform: scale(1.1); }
+
+        .tech-item span {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        /* COLORES ICONOS */
+        .fa-cloud { color: #0078D4; }
+        .fa-ubuntu { color: #E95420; }
+        .fa-server { color: #009639; }
+        .fa-git-alt { color: #F05032; }
+
+        /* FOOTER */
+        footer {
+            background-color: var(--bg-body);
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+        }
+
+        /* ANIMACIONES DE ENTRADA (Scroll Reveal) */
+        .hidden {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        
+        .show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 480px) {
+            header h1 { font-size: 1.8rem; }
+            .tech-grid { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <button class="theme-toggle" id="theme-btn" aria-label="Cambiar tema">
+            <i class="fa-solid fa-moon"></i>
+        </button>
+
+        <header>
+            <h1>
+                <span id="typewriter"></span><span class="cursor">&nbsp;</span>
+            </h1>
+            <p class="hidden">Práctica de Despliegue en Azure</p>
+        </header>
+
+        <main>
+            <section class="hidden">
+                <h2>Sobre el proyecto</h2>
+                <p class="description">
+                    Esta página web es el resultado de una práctica técnica de despliegue en la nube. 
+                    Actualmente está alojada en una <strong>Máquina Virtual de Microsoft Azure</strong>. 
+                    El contenido es servido a través del servidor web <strong>Nginx</strong> y la conexión 
+                    está asegurada mediante certificados <strong>SSL</strong>.
+                </p>
+            </section>
+
+            <section class="hidden">
+                <h2>Tecnologías</h2>
+                <div class="tech-grid">
+                    <div class="tech-item">
+                        <i class="fa-solid fa-cloud"></i>
+                        <span>Azure</span>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fa-brands fa-ubuntu"></i>
+                        <span>Ubuntu</span>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fa-solid fa-server"></i>
+                        <span>Nginx</span>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fa-brands fa-git-alt"></i>
+                        <span>Git</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            Despliegue realizado en 2026
+        </footer>
+    </div>
+
+    <script>
+        // 1. EFECTO TYPEWRITER (Máquina de escribir)
+        const textToType = "Javier"; // TU NOMBRE AQUÍ
+        const typeWriterElement = document.getElementById('typewriter');
+        let i = 0;
+
+        function typeWriter() {
+            if (i < textToType.length) {
+                typeWriterElement.innerHTML += textToType.charAt(i);
+                i++;
+                setTimeout(typeWriter, 100); // Velocidad de escritura
+            }
+        }
+
+        // 2. MODO OSCURO
+        const themeBtn = document.getElementById('theme-btn');
+        const themeIcon = themeBtn.querySelector('i');
+        
+        themeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        });
+
+        // 3. SCROLL ANIMATIONS (Intersection Observer)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                }
+            });
+        });
+
+        const hiddenElements = document.querySelectorAll('.hidden');
+        hiddenElements.forEach((el) => observer.observe(el));
+
+        // Iniciar escritura al cargar
+        window.onload = typeWriter;
+    </script>
+</body>
+</html>
