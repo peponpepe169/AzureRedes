@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* VARIABLES CSS PARA MANEJO DE TEMAS */
         :root {
             --primary: #0078D4;
             --primary-hover: #005a9e;
@@ -21,9 +20,8 @@
             --gradient: linear-gradient(135deg, #0078D4, #005a9e);
         }
 
-        /* CLASE PARA MODO OSCURO */
         body.dark-mode {
-            --primary: #60a5fa; /* Un azul más claro para fondo oscuro */
+            --primary: #60a5fa;
             --primary-hover: #3b82f6;
             --bg-body: #111827;
             --bg-card: #1f2937;
@@ -61,7 +59,6 @@
             position: relative;
         }
 
-        /* BOTÓN MODO OSCURO */
         .theme-toggle {
             position: absolute;
             top: 20px;
@@ -78,7 +75,6 @@
         }
         .theme-toggle:hover { transform: scale(1.1); }
 
-        /* HEADER */
         header {
             background: var(--gradient);
             color: white;
@@ -91,10 +87,9 @@
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 10px;
-            min-height: 1.2em; /* Evita saltos mientras se escribe */
+            min-height: 1.2em;
         }
 
-        /* Cursor parpadeante */
         .cursor {
             display: inline-block;
             width: 3px;
@@ -106,7 +101,6 @@
 
         header p { font-size: 1.1rem; opacity: 0.9; font-weight: 300; }
 
-        /* MAIN */
         main { padding: 40px 30px; }
         section { margin-bottom: 40px; }
 
@@ -120,7 +114,6 @@
 
         p.description { color: var(--text-muted); font-size: 1.05rem; }
 
-        /* GRID TECNOLOGÍAS */
         .tech-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -157,13 +150,11 @@
             color: var(--text-main);
         }
 
-        /* COLORES ICONOS */
         .fa-cloud { color: #0078D4; }
         .fa-ubuntu { color: #E95420; }
         .fa-server { color: #009639; }
         .fa-git-alt { color: #F05032; }
 
-        /* FOOTER */
         footer {
             background-color: var(--bg-body);
             padding: 20px;
@@ -173,7 +164,6 @@
             border-top: 1px solid var(--border);
         }
 
-        /* ANIMACIONES DE ENTRADA (Scroll Reveal) */
         .hidden {
             opacity: 0;
             transform: translateY(30px);
@@ -185,7 +175,6 @@
             transform: translateY(0);
         }
 
-        /* RESPONSIVE */
         @media (max-width: 480px) {
             header h1 { font-size: 1.8rem; }
             .tech-grid { grid-template-columns: 1fr 1fr; }
@@ -246,8 +235,7 @@
     </div>
 
     <script>
-        // 1. EFECTO TYPEWRITER (Máquina de escribir)
-        const textToType = "Javier"; // TU NOMBRE AQUÍ
+        const textToType = "Javier Valero";
         const typeWriterElement = document.getElementById('typewriter');
         let i = 0;
 
@@ -255,11 +243,10 @@
             if (i < textToType.length) {
                 typeWriterElement.innerHTML += textToType.charAt(i);
                 i++;
-                setTimeout(typeWriter, 100); // Velocidad de escritura
+                setTimeout(typeWriter, 100);
             }
         }
 
-        // 2. MODO OSCURO
         const themeBtn = document.getElementById('theme-btn');
         const themeIcon = themeBtn.querySelector('i');
         
@@ -275,7 +262,6 @@
             }
         });
 
-        // 3. SCROLL ANIMATIONS (Intersection Observer)
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
@@ -287,7 +273,6 @@
         const hiddenElements = document.querySelectorAll('.hidden');
         hiddenElements.forEach((el) => observer.observe(el));
 
-        // Iniciar escritura al cargar
         window.onload = typeWriter;
     </script>
 </body>
